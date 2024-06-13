@@ -4,6 +4,7 @@
 #include <string>
 
 #include "constants.hpp"
+#include "clustering.hpp"
 #include "image.hpp"
 #include "io.hpp"
 
@@ -22,10 +23,11 @@ int main(int argc, char * argv[])
         std::cerr << "Unable to open file." << std::endl;
         return EXIT_FAILURE;
     }
-    std::cout << "Reading: " << filepath << std::endl;
 
-    const auto image = land::read_map<MAP::HEIGHT, MAP::WIDTH>(file);
-    land::print(image);
+    const auto image = land::read_map<MAP::HEIGHT, MAP::WIDTH, MAP::PADDING>(file);
+    const land::Image<int, MAP::HEIGHT, MAP::WIDTH, MAP::PADDING> clusters = land::clustering(image);
+
+    std::cout << "There are " << number_of_clusters(clusters) << " landmasses in this map." << std::endl;
 
     return EXIT_SUCCESS;
 }
