@@ -16,12 +16,17 @@ template<int Height, int Width>
 land::Image<char, Height, Width> read_map(std::ifstream& file)
 {
     land::Image<char, Height, Width> image{};
-    for (int row = 0; row < Height; ++row)
+    std::fill(image._data.begin(), image._data.end(), SYMBOL::WATER); // set everything, especially the padding, to water
+
+    for (int h = 0; h < Height; ++h)
     {
         std::string line{};
         if(std::getline(file, line))
         {
-            std::copy(line.cbegin(), line.cend(), image._data.begin()+(row*image.width()));
+            for (int w = 0; w < Width; ++w)
+            {
+                image(h, w) = line[w];
+            }
         }
     }
 
