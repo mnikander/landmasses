@@ -17,3 +17,6 @@ target_link_libraries(unit_tests ${GTEST_LIBRARIES} pthread)
 
 add_executable(landmasses src/main.cpp)
 target_include_directories(landmasses PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_executable(simplified_landmasses src/simplified_implementation.cpp)
+target_include_directories(simplified_landmasses PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
