@@ -1,73 +1,60 @@
 #pragma once
 
-#include <algorithm>
+#include <array>
 #include <vector>
-#include "constants.hpp"
-#include "image.hpp"
+#include <utility>
+
+#include "common.hpp"
 
 namespace land {
 
-template<int Height, int Width, int Padding>
-Image<int, Height, Width, Padding> chart_to_int_image(Image<char, Height, Width, Padding> const& chart)
-{
-    Image<int, Height, Width, Padding> image{};
-    std::transform(chart._data.cbegin(), chart._data.cend(), image._data.begin(), 
-                   [](char c){ return c == SYMBOL::WATER ? ID::WATER : ID::UNASSIGNED; });
-    return image;
-}
+    namespace { // anonymous namespace for details
 
-// connected components: iterate over every pixel and start depth-first search using a 3x3 kernel to identify neighbors
-template<int Height, int Width, int Padding>
-Image<int, Height, Width, Padding> clustering(Image<char, Height, Width, Padding> const& chart)
-{
-    Image<int, Height, Width, Padding> image = chart_to_int_image(chart);
-    int clusterId                            = ID::FIRST_CLUSTER;
+        bool is_in_bounds(int row, int col) { return (0 <= row) && (row < IMAGE::HEIGHT) && (0 <= col) && (col < IMAGE::WIDTH);}
+        bool is_unmarked(int row, int col, Map const& map) { return map[row][col] == ID::LAND; };
+        void mark(int row, int col, Map & map, int islandNumber) { map[row][col] = islandNumber; };
+        void push(int row, int col, Stack & placesToSearch) { placesToSearch.push_back({row, col}); }
+        std::pair<int, int> pop(Stack & placesToSearch) { const std::pair<int, int> result = placesToSearch.back(); placesToSearch.pop_back(); return result; }
 
-    std::vector<Coordinate> stack{};
+    } // namespace anonymous
 
-    for(int h = 0; h < Height; ++h)
+    //! iterate over every pixel and start a depth-first search to find all of its connected components
+    int cluster_landmasses(Map & map)
     {
-        for(int w = 0; w < Width; ++w)
+        int islandNumber = 0;
+        Stack placesToSearch{}; // use a stack for DFS, instead of recursion, to avoid the recursion-depth limit
+
+        for(int h = 0; h < IMAGE::HEIGHT; ++h)
         {
-            if(image(h, w) == ID::UNASSIGNED)
+            for(int w = 0; w < IMAGE::WIDTH; ++w)
             {
-                const Coordinate c{h, w};
-                stack.push_back(c);
-                image(c) = ID::QUEUED;
-
-                while(stack.size() != 0U)
+                if(is_unmarked(h, w, map))
                 {
-                    const Coordinate current = stack.back();
-                    image(current)           = clusterId;
-                    stack.pop_back();
+                    ++islandNumber;
+                    mark(h, w, map, islandNumber);
+                    push(h, w, placesToSearch);
 
-                    for(int r = -1; r <= 1; ++r)
+                    while(placesToSearch.size() > 0)
                     {
-                        for(int c = -1; c <= 1; ++c)
-                        {
-                            Coordinate other{current.row+r, current.col+c};
+                        const auto& [r, c] = pop(placesToSearch);
 
-                            if(image(other) == ID::UNASSIGNED)
+                        // 3x3 kernel
+                        for(int row = r-1; row <= r+1; ++row)
+                        {
+                            for(int col = c-1; col <= c+1; ++col)
                             {
-                                stack.push_back(other);
-                                image(other) = ID::QUEUED;
+                                if(is_in_bounds(row, col) && is_unmarked(row, col, map))
+                                {
+                                    mark(row, col, map, islandNumber);
+                                    push(row, col, placesToSearch);
+                                }
                             }
                         }
                     }
                 }
-                ++clusterId;
             }
         }
+        return islandNumber;
     }
-    return image;
-}
 
-template<int Height, int Width, int Padding>
-int count_clusters(Image<int, Height, Width, Padding> const& clusters)
-{
-    const auto iter  = std::max_element(clusters._data.cbegin(), clusters._data.cend());
-    const int number = *iter;
-    return std::max(0, number); // if it's negative, make it zero
-}
-
-}
+} // namespace land

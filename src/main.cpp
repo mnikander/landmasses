@@ -1,11 +1,10 @@
-#include <cstdlib> // EXIT_SUCCESS
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <string>
 
-#include "constants.hpp"
 #include "clustering.hpp"
-#include "image.hpp"
+#include "common.hpp"
 #include "io.hpp"
 
 int main(int argc, char * argv[])
@@ -24,10 +23,9 @@ int main(int argc, char * argv[])
         return EXIT_FAILURE;
     }
 
-    const auto image = land::read_map<MAP::HEIGHT, MAP::WIDTH, MAP::PADDING>(file);
-    const land::Image<int, MAP::HEIGHT, MAP::WIDTH, MAP::PADDING> clusters = land::clustering(image);
+    land::Map map   = land::create_map(file);
+    const int count = land::cluster_landmasses(map);
 
-    std::cout << "There are " << count_clusters(clusters) << " landmasses in this map." << std::endl;
-
+    std::cout << "There are " << count << " landmasses in this map." << std::endl;
     return EXIT_SUCCESS;
 }

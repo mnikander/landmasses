@@ -1,50 +1,29 @@
 #pragma once
 
-#include <algorithm>
-#include <cstdlib>
-#include <iterator>
 #include <fstream>
-#include <iostream>
 #include <string>
 
-#include "constants.hpp"
-#include "image.hpp"
+#include "common.hpp"
 
 namespace land {
 
-template<int Height, int Width, int Padding>
-land::Image<char, Height, Width, Padding> read_map(std::ifstream& file)
-{
-    land::Image<char, Height, Width, Padding> image{};
-    std::fill(image._data.begin(), image._data.end(), SYMBOL::WATER); // set everything, especially the padding, to water
-
-    for (int h = 0; h < Height; ++h)
+    //! load a map from an ifstream and set IDs corresponding to water and non-water pixels
+    Map create_map(std::ifstream& file)
     {
-        std::string line{};
-        if(std::getline(file, line))
+        Map map{};
+
+        for (int h = 0; h < IMAGE::HEIGHT; ++h)
         {
-            for (int w = 0; w < Width; ++w)
+            std::string line{};
+            if(std::getline(file, line))
             {
-                image(h, w) = line[w];
+                for (int w = 0; w < IMAGE::WIDTH; ++w)
+                {
+                    map[h][w] = (line[w] == SYMBOL::WATER) ? ID::WATER : ID::LAND;
+                }
             }
         }
+        return map; // copying is avoided due to return-value optimization
     }
 
-    return image;
-}
-
-// TODO: it would be much better to just implement this as an ostream operator for the image
-template<typename T, int Height, int Width, int Padding>
-void print(land::Image<T, Height, Width, Padding> const& image)
-{
-    for (int h = 0; h < Height; ++h)
-    {
-        for (int w = 0; w < Width; ++w)
-        {
-            std::cout << image(h, w) << "";
-        }
-        std::cout << std::endl;
-    }
-}
-
-}
+} // namespace land
