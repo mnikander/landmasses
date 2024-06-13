@@ -1,8 +1,9 @@
 #pragma once
 
 namespace MAP {
-    constexpr int HEIGHT = 50;
-    constexpr int WIDTH  = 80;
+    constexpr int HEIGHT  = 50;
+    constexpr int WIDTH   = 80;
+    constexpr int PADDING =  1;
 }
 
 namespace SYMBOL {

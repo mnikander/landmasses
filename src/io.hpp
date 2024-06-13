@@ -12,10 +12,10 @@
 
 namespace land {
 
-template<int Height, int Width>
-land::Image<char, Height, Width> read_map(std::ifstream& file)
+template<int Height, int Width, int Padding>
+land::Image<char, Height, Width, Padding> read_map(std::ifstream& file)
 {
-    land::Image<char, Height, Width> image{};
+    land::Image<char, Height, Width, Padding> image{};
     std::fill(image._data.begin(), image._data.end(), SYMBOL::WATER); // set everything, especially the padding, to water
 
     for (int h = 0; h < Height; ++h)
@@ -34,8 +34,8 @@ land::Image<char, Height, Width> read_map(std::ifstream& file)
 }
 
 // TODO: it would be much better to just implement this as an ostream operator for the image
-template<typename T, int Height, int Width>
-void print(land::Image<T, Height, Width> const& image)
+template<typename T, int Height, int Width, int Padding>
+void print(land::Image<T, Height, Width, Padding> const& image)
 {
     for (int h = 0; h < Height; ++h)
     {
