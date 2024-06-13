@@ -4,8 +4,8 @@
 
 namespace land {
 
-std::array<char, 5U> symbols        {'.', '+', '*', '@', '^'};
-std::array<char, 6U> invalid_symbols{'.', '+', '*', '@', '^', '#'};
+constexpr std::array<char, 5U> symbols        {'.', '+', '*', '@', '^'};
+constexpr std::array<char, 6U> invalid_symbols{'.', '+', '*', '@', '^', '#'};
 
 // arrow or U-shapes are tricky for some pixel-kernel based clustering algorithms
 constexpr std::array<char, 9> up   {'.', '+', '.',

@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "../src/constants.hpp"
 #include "../src/image.hpp"
+#include "sample.hpp"
 
 namespace {
 
@@ -42,6 +43,21 @@ TEST(image, empty)
     ASSERT_EQ(image._data.size(), 0);
     EXPECT_EQ(image.height(), 0);
     EXPECT_EQ(image.width(), 0);
+}
+
+TEST(image, symbols)
+{
+    const land::Image<char, 1, 5> image(land::symbols, SYMBOL::WATER);
+
+    ASSERT_EQ(image.size(), 5);
+    ASSERT_EQ(image._data.size(), 5);
+    EXPECT_EQ(image.height(), 1);
+    EXPECT_EQ(image.width(), 5);
+    EXPECT_EQ(image(0, 0), '.');
+    EXPECT_EQ(image(0, 1), '+');
+    EXPECT_EQ(image(0, 2), '*');
+    EXPECT_EQ(image(0, 3), '@');
+    EXPECT_EQ(image(0, 4), '^');
 }
 
 TEST(image, six)
