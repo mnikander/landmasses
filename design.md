@@ -27,9 +27,7 @@ Several approaches are possible here:
 - multi-pass clustering (simple, but probably also quite slow)
 - stixel-clustering (probably quite fast, but also a bit more complicated than DFS / BFS)
 
-I'll go for the simplest solution first, but with proper tests.
-If there is time leftover I can try one of the faster approaches, or to speed the approach up at least a little bit.
-
+I'll go with DFS.
 For the neighborhood search I will use a 3x3 kernel, to find neighboring non-water pixels.
 With DSU I could probably shrink this to 2x2, but not with DFS/BFS, because there is no telling in what order the image will be traversed.
 
@@ -61,3 +59,14 @@ Array or Vector?
 - could switch to vector in the future, or just put the array on the stack, if the maps get larger
 
 I'll take the array, it will probably execute faster.
+
+# Potential runtime improvements
+
+- Loop unrolling of the kernel could help
+- Add padding to the image to remove if-statements for bounds-checking would avoid branching and could enable partial vectorization
+
+The biggest performance gain would probably be seen by switching to another algorithm such as a:
+- _linear_ single-pass clustering a disjoint set union datastructure, which would have fewer cache misses, excellent prefetching, and only needs a 2x2 kernel
+- stixel clustering where the contents of each row and clustered into 1d intervals, and those intervals are in turn merged across rows using an interval intersection operation (probably DSU)
+
+Implementing either one from scratch, with good test coverage and without an external library, would take more than an afternoon.
