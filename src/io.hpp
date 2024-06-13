@@ -7,12 +7,8 @@
 #include <iostream>
 #include <string>
 
+#include "constants.hpp"
 #include "image.hpp"
-
-namespace map {
-    constexpr int HEIGHT = 50;
-    constexpr int WIDTH  = 80;
-}
 
 namespace land {
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 
+#include "constants.hpp"
 #include "image.hpp"
 #include "io.hpp"
 
@@ -23,7 +24,7 @@ int main(int argc, char * argv[])
     }
     std::cout << "Reading: " << filepath << std::endl;
 
-    const auto image = land::read_map<map::HEIGHT, map::WIDTH>(file);
+    const auto image = land::read_map<MAP::HEIGHT, MAP::WIDTH>(file);
     land::print(image);
 
     return EXIT_SUCCESS;
