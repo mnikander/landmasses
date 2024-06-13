@@ -40,7 +40,7 @@ struct Image
     const T& operator()(int row, int col) const  { return _data[index(row, col)]; }
     const T& operator()(Coordinate c) const      { return _data[index(c.row, c.col)]; }
 
-    std::array<char, padded_size()> _data{};
+    std::array<T, padded_size()> _data{};
 };
 
 }
