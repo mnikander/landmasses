@@ -6,7 +6,10 @@ namespace {
 TEST(image, empty)
 {
     const land::Image<char, 0, 0> image{};
+    ASSERT_EQ(image.size(), 0);
     ASSERT_EQ(image._data.size(), 0);
+    EXPECT_EQ(image.height(), 0);
+    EXPECT_EQ(image.width(), 0);
 }
 
 TEST(image, six)
@@ -14,7 +17,10 @@ TEST(image, six)
     land::Image<char, 3, 2> image{};
     image._data = {'a', 'b', 'c', 'd', 'e', 'f'};
 
+    ASSERT_EQ(image.size(), 6);
     ASSERT_EQ(image._data.size(), 6);
+    EXPECT_EQ(image.height(), 3);
+    EXPECT_EQ(image.width(), 2);
     EXPECT_EQ(image(0, 0), 'a');
     EXPECT_EQ(image(0, 1), 'b');
     EXPECT_EQ(image(1, 0), 'c');
