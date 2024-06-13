@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <vector>
 #include "constants.hpp"
 #include "image.hpp"
 
