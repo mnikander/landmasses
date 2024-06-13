@@ -1,8 +1,10 @@
-#include <algorithm>
-#include <cstdlib>
+#include <cstdlib> // EXIT_SUCCESS
+#include <fstream>
 #include <iostream>
+#include <string>
 
 #include "image.hpp"
+#include "io.hpp"
 
 int main(int argc, char * argv[])
 {
@@ -12,7 +14,17 @@ int main(int argc, char * argv[])
         return EXIT_FAILURE;
     }
     std::string filepath(argv[1]);
-    std::cout << filepath << std::endl;
+    std::ifstream file(filepath);
+
+    if(!file)
+    {
+        std::cerr << "Unable to open file." << std::endl;
+        return EXIT_FAILURE;
+    }
+    std::cout << "Reading: " << filepath << std::endl;
+
+    const auto image = land::read_map<map::HEIGHT, map::WIDTH>(file);
+    land::print(image);
 
     return EXIT_SUCCESS;
 }
