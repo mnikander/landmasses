@@ -27,7 +27,7 @@ int main(int argc, char * argv[])
     const auto image = land::read_map<MAP::HEIGHT, MAP::WIDTH, MAP::PADDING>(file);
     const land::Image<int, MAP::HEIGHT, MAP::WIDTH, MAP::PADDING> clusters = land::clustering(image);
 
-    std::cout << "There are " << number_of_clusters(clusters) << " landmasses in this map." << std::endl;
+    std::cout << "There are " << count_clusters(clusters) << " landmasses in this map." << std::endl;
 
     return EXIT_SUCCESS;
 }

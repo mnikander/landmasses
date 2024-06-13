@@ -7,7 +7,7 @@
 namespace land {
 
 template<int Height, int Width, int Padding>
-Image<int, Height, Width, Padding> preprocess(Image<char, Height, Width, Padding> const& chart)
+Image<int, Height, Width, Padding> chart_to_int_image(Image<char, Height, Width, Padding> const& chart)
 {
     Image<int, Height, Width, Padding> image{};
     std::transform(chart._data.cbegin(), chart._data.cend(), image._data.begin(), 
@@ -15,10 +15,11 @@ Image<int, Height, Width, Padding> preprocess(Image<char, Height, Width, Padding
     return image;
 }
 
+// connected components: iterate over every pixel and start depth-first search using a 3x3 kernel to identify neighbors
 template<int Height, int Width, int Padding>
 Image<int, Height, Width, Padding> clustering(Image<char, Height, Width, Padding> const& chart)
 {
-    Image<int, Height, Width, Padding> image = preprocess(chart);
+    Image<int, Height, Width, Padding> image = chart_to_int_image(chart);
     int clusterId                            = ID::FIRST_CLUSTER;
 
     std::vector<Coordinate> stack{};
@@ -61,7 +62,7 @@ Image<int, Height, Width, Padding> clustering(Image<char, Height, Width, Padding
 }
 
 template<int Height, int Width, int Padding>
-int number_of_clusters(Image<int, Height, Width, Padding> const& clusters)
+int count_clusters(Image<int, Height, Width, Padding> const& clusters)
 {
     const auto iter  = std::max_element(clusters._data.cbegin(), clusters._data.cend());
     const int number = *iter;
