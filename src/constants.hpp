@@ -16,7 +16,7 @@ namespace SYMBOL {
 
 namespace ID {
     constexpr int FIRST_CLUSTER =  1;
-    constexpr int WATER         = -1;
+    constexpr int WATER         =  0;
     constexpr int UNASSIGNED    = -2;
     constexpr int QUEUED        = -3;
 }
