@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <cmath>
 #include "../src/constants.hpp"
 #include "../src/image.hpp"
 #include "sample.hpp"
@@ -92,6 +93,23 @@ TEST(image, six_padded)
     EXPECT_EQ(image(1, 1), 'd');
     EXPECT_EQ(image(2, 0), 'e');
     EXPECT_EQ(image(2, 1), 'f');
+}
+
+TEST(image, floats)
+{
+    // astoundingly, even this unit test, with a value type which cannot be converted implicitely, would not have made
+    // a difference in the cryptic compiler output for the bug which cost me so much time
+
+    const land::Image<float, 3, 2, 1> image({0.0F, 1.0F, 2.0F, 3.0F, 4.0F, 5.0F}, NAN);
+
+    ASSERT_EQ(image.size(), 6);
+    ASSERT_EQ(image.padded_size(), 20);
+    EXPECT_FLOAT_EQ(image(0, 0), 0.0F);
+    EXPECT_FLOAT_EQ(image(0, 1), 1.0F);
+    EXPECT_FLOAT_EQ(image(1, 0), 2.0F);
+    EXPECT_FLOAT_EQ(image(1, 1), 3.0F);
+    EXPECT_FLOAT_EQ(image(2, 0), 4.0F);
+    EXPECT_FLOAT_EQ(image(2, 1), 5.0F);
 }
 
 }
