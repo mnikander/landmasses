@@ -31,3 +31,6 @@ The runtime and memory usage are both in O(n).
     - c. Return the number of clusters found
 - 3. Output
     - a. Print the author name and number of landmasses to the console
+
+# Known issues
+- code was not split into header and source files, so linking will fail, if you try to incorporate it into more than one binary
