@@ -13,3 +13,6 @@ add_executable(unit_tests test/main.cpp
                           test/test_image.cpp
 )
 target_link_libraries(unit_tests ${GTEST_LIBRARIES} pthread)
+
+add_executable(landmasses src/main.cpp)
+target_include_directories(landmasses PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
