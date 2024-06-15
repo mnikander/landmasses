@@ -5,13 +5,10 @@ Count the number of islands in a map of characters.
 # Getting started
 
 ```bash
-cd landmasses
-mkdir out
-cd out
-cmake ..
-cd ..
-cmake --build out/  # out-of-source build
-./out/landmasses path/to/map.txt
+# out-of-source build
+cd landmasses && mkdir out && cd out && cmake .. && cd ..
+cmake --build out/
+./out/landmasses resources/map1_6islands.txt
 ```
 
 # Approach
