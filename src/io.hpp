@@ -8,7 +8,7 @@
 namespace land {
 
     //! load a map from an ifstream and set IDs corresponding to water and non-water pixels
-    Map create_map(std::ifstream& file)
+    inline Map create_map(std::ifstream& file)
     {
         Map map{};
 

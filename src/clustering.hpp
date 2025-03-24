@@ -10,16 +10,16 @@ namespace land {
 
     namespace { // anonymous namespace for details
 
-        bool is_in_bounds(int row, int col) { return (0 <= row) && (row < IMAGE::HEIGHT) && (0 <= col) && (col < IMAGE::WIDTH);}
-        bool is_unmarked(int row, int col, Map const& map) { return map[row][col] == ID::LAND; };
-        void mark(int row, int col, Map & map, int islandNumber) { map[row][col] = islandNumber; };
-        void push(int row, int col, Stack & placesToSearch) { placesToSearch.push_back({row, col}); }
-        std::pair<int, int> pop(Stack & placesToSearch) { const std::pair<int, int> result = placesToSearch.back(); placesToSearch.pop_back(); return result; }
+        inline bool is_in_bounds(int row, int col) { return (0 <= row) && (row < IMAGE::HEIGHT) && (0 <= col) && (col < IMAGE::WIDTH);}
+        inline bool is_unmarked(int row, int col, Map const& map) { return map[row][col] == ID::LAND; };
+        inline void mark(int row, int col, Map & map, int islandNumber) { map[row][col] = islandNumber; };
+        inline void push(int row, int col, Stack & placesToSearch) { placesToSearch.push_back({row, col}); }
+        inline std::pair<int, int> pop(Stack & placesToSearch) { const std::pair<int, int> result = placesToSearch.back(); placesToSearch.pop_back(); return result; }
 
     } // namespace anonymous
 
     //! iterate over every pixel and start a depth-first search to find all of its connected components
-    int cluster_landmasses(Map & map)
+    inline int cluster_landmasses(Map & map)
     {
         int islandNumber = 0;
         Stack placesToSearch{}; // use a stack for DFS, instead of recursion, to avoid the recursion-depth limit
